@@ -1,27 +1,28 @@
 package com.solid.ejercicio6;
 
+import com.solid.ejercicio6.model.Coche;
+import com.solid.ejercicio6.repository.RepositorioParking;
+import com.solid.ejercicio6.service.GestorIngreso;
+import com.solid.ejercicio6.service.GestorEgreso;
+
+
 public class MainEjercicio6 {
     public static void main(String[] args) {
-        // 1. Creamos el sistema de control
-        Estacionamiento parking = new Estacionamiento();
+        // 1. Instancia única del repositorio (La base de datos en memoria)
+        RepositorioParking repoCentral = new RepositorioParking();
 
-        // 2. Creamos los vehículos
-        // Nota como Coche y Bici son diferentes pero conviven
-        Coche miCoche = new Coche("ABC-123");
-        Bicicleta miBici = new Bicicleta("BMX-001");
-        Motocicleta miMoto = new Motocicleta("YAM-999");
+        // 2. Inyección con Polimorfismo
+        // GestorIngreso pide un IGuardador -> repoCentral cumple ese rol
+        GestorIngreso ingreso = new GestorIngreso(repoCentral);
 
-        // 3. Probamos el comportamiento específico (Motor)
-        // La bici NO tiene acceso a encenderMotor(), lo cual es correcto lógicamente.
-        miCoche.encenderMotor();
-        // miBici.encenderMotor(); // Esto daría error de compilación. ¡ISP funciona!
+        // GestorEgreso pide IBuscador e IEliminador -> repoCentral cumple ambos roles
+        // Nota: Pasamos el MISMO objeto, pero tratado como interfaces distintas.
+        GestorEgreso egreso = new GestorEgreso(repoCentral, repoCentral);
 
-        // 4. Ingresamos todos al estacionamiento (DIP en acción)
-        parking.aparcarVehiculo(miCoche);
-        parking.aparcarVehiculo(miBici);
-        parking.aparcarVehiculo(miMoto);
+        // 3. Ejecución
+        Coche coche = new Coche("XYZ-123");
 
-        // 5. Verificamos que todos respondan
-        parking.realizarRondaDeVigilancia();
+        ingreso.procesarIngreso(coche); // OK
+        egreso.procesarSalida("XYZ-123"); // OK
     }
 }
