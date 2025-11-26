@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 public class Motocicleta implements IIdentificable, IConducible, IMotorizable {
     private static final Logger logger = Logger.getLogger(Motocicleta.class.getName());
+    private static final String TIPO = "Moto ";
     private final String placa;
 
     public Motocicleta(String placa) {
@@ -16,12 +17,18 @@ public class Motocicleta implements IIdentificable, IConducible, IMotorizable {
 
     @Override
     public void encenderMotor() {
-        logger.info(() -> "Moto " + placa + ": Motor encendido.");
+        // Usamos la constante TIPO
+        logger.info(() -> TIPO + placa + ": Motor encendido.");
+    }
+
+    @Override
+    public void apagarMotor() {
+        logger.info(() -> TIPO + placa + ": Shhh... Motor APAGADO.");
     }
 
     @Override
     public void conducir() {
-        logger.info(() -> "Moto " + placa + ": En movimiento.");
+        logger.info(() -> TIPO + placa + ": En movimiento.");
     }
 
     @Override

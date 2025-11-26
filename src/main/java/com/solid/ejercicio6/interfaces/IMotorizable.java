@@ -6,4 +6,5 @@ package com.solid.ejercicio6.interfaces;
 
 public interface IMotorizable {
     void encenderMotor();
+    void apagarMotor();
 }
