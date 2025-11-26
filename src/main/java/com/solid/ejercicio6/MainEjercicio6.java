@@ -4,25 +4,23 @@ import com.solid.ejercicio6.model.Coche;
 import com.solid.ejercicio6.repository.RepositorioParking;
 import com.solid.ejercicio6.service.GestorIngreso;
 import com.solid.ejercicio6.service.GestorEgreso;
+import com.solid.ejercicio6.view.MenuSistema;
 
 
 public class MainEjercicio6 {
     public static void main(String[] args) {
-        // 1. Instancia única del repositorio (La base de datos en memoria)
+        // 1. Configuración de Dependencias (Infraestructura)
         RepositorioParking repoCentral = new RepositorioParking();
 
-        // 2. Inyección con Polimorfismo
-        // GestorIngreso pide un IGuardador -> repoCentral cumple ese rol
-        GestorIngreso ingreso = new GestorIngreso(repoCentral);
+        // 2. Creación de Servicios (Lógica de Negocio)
+        // Nota: repoCentral actúa como IGuardador, IEliminador, IBuscador e ILector
+        GestorIngreso srvIngreso = new GestorIngreso(repoCentral);
+        GestorEgreso srvEgreso = new GestorEgreso(repoCentral, repoCentral);
 
-        // GestorEgreso pide IBuscador e IEliminador -> repoCentral cumple ambos roles
-        // Nota: Pasamos el MISMO objeto, pero tratado como interfaces distintas.
-        GestorEgreso egreso = new GestorEgreso(repoCentral, repoCentral);
+        // 3. Creación de la Vista (UI)
+        MenuSistema menu = new MenuSistema(srvIngreso, srvEgreso, repoCentral);
 
-        // 3. Ejecución
-        Coche coche = new Coche("XYZ-123");
-
-        ingreso.procesarIngreso(coche); // OK
-        egreso.procesarSalida("XYZ-123"); // OK
+        // 4. Ejecución
+        menu.iniciar();
     }
 }

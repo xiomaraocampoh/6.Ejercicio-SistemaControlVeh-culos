@@ -4,13 +4,14 @@ import com.solid.ejercicio6.interfaces.IIdentificable;
 import com.solid.ejercicio6.repository.interfaces.IBuscador;
 import com.solid.ejercicio6.repository.interfaces.IEliminador;
 import com.solid.ejercicio6.repository.interfaces.IGuardador;
+import com.solid.ejercicio6.repository.interfaces.ILectorInventario;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 // Implementa TODOS los roles, pero se entregará "por partes" a quien lo necesite.
-public class RepositorioParking implements IGuardador, IEliminador, IBuscador {
+public class RepositorioParking implements IGuardador, IEliminador, IBuscador, ILectorInventario {
 
     private final List<IIdentificable> vehiculos = new ArrayList<>();
 
@@ -29,6 +30,11 @@ public class RepositorioParking implements IGuardador, IEliminador, IBuscador {
         return vehiculos.stream()
                 .filter(v -> v.getPlacaOIdentificador().equals(id))
                 .findFirst();
+    }
+
+    @Override
+    public List<IIdentificable> obtenerTodos() {
+        return new ArrayList<>(vehiculos);
     }
 
 }
