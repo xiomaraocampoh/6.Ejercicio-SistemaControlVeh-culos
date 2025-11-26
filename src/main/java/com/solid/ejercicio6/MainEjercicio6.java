@@ -1,6 +1,5 @@
 package com.solid.ejercicio6;
 
-import com.solid.ejercicio6.model.Coche;
 import com.solid.ejercicio6.repository.RepositorioParking;
 import com.solid.ejercicio6.service.GestorIngreso;
 import com.solid.ejercicio6.service.GestorEgreso;
